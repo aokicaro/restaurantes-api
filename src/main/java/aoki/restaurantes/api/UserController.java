@@ -37,13 +37,13 @@ public class UserController {
         return service.searchByName(name).stream().map(UserResponse::from).toList();
     }
 
-    // Endpoint de update "normal" (sem senha)
+    // No password endpoint
     @PutMapping("/{id}")
     public UserResponse updateProfile(@PathVariable UUID id, @Valid @RequestBody UserUpdateRequest req) {
         return UserResponse.from(service.updateProfile(id, req));
     }
 
-    // Endpoint exclusivo de senha
+    // Endpoint with password
     @PatchMapping("/{id}/password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changePassword(@PathVariable UUID id, @Valid @RequestBody ChangePasswordRequest req) throws BadRequestException {

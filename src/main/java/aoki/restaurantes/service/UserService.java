@@ -25,6 +25,7 @@ public class UserService {
 
     @Transactional
     public User create(UserCreateRequest req) {
+        //TODO Change the hard code message
         if (repo.existsByEmail(req.email())) throw new ConflictException("E-mail ja cadastrado.");
 
         User u = new User();
@@ -38,6 +39,7 @@ public class UserService {
     }
 
     public User get(UUID id) {
+        //TODO Change the hard code message
         return repo.findById(id).orElseThrow(() -> new NotFoundException("Usuario nao encontrado."));
     }
 
@@ -49,8 +51,9 @@ public class UserService {
     public User updateProfile(UUID id, UserUpdateRequest req) {
         User u = get(id);
 
-        // Se trocar email, checa unicidade
+        // If change the email checks if it's unique
         if (!u.getEmail().equalsIgnoreCase(req.email()) && repo.existsByEmail(req.email())) {
+            //TODO Change the hard code message
             throw new ConflictException("E-mail ja cadastrado.");
         }
 
@@ -67,6 +70,7 @@ public class UserService {
         User u = get(id);
 
         if (!encoder.matches(req.password(), u.getPasswordHash())) {
+            //TODO Change the hard code message
             throw new BadRequestException("Senha atual invalida.");
         }
         u.setPasswordHash(encoder.encode(req.newPassword()));

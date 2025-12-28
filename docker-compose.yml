@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16
+    container_name: restaurantes-db
+    environment:
+      POSTGRES_DB: restaurantes
+      POSTGRES_USER: restaurantes
+      POSTGRES_PASSWORD: restaurantes
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: restaurantes-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/restaurantes
+      SPRING_DATASOURCE_USERNAME: restaurantes
+      SPRING_DATASOURCE_PASSWORD: restaurantes
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_OPEN_IN_VIEW: "false"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
