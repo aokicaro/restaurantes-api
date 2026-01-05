@@ -12,8 +12,8 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.*;
+import aoki.restaurantes.shared.Messages;
 
 @Service
 public class UserService {
@@ -26,7 +26,7 @@ public class UserService {
     @Transactional
     public User create(UserCreateRequest req) {
         //TODO Change the hard code message
-        if (repo.existsByEmail(req.email())) throw new ConflictException("E-mail ja cadastrado.");
+        if (repo.existsByEmail(req.email())) throw new ConflictException(Messages.User.EMAIL_ALREADY_EXISTS);
 
         User u = new User();
         u.setName(req.name());
@@ -40,7 +40,7 @@ public class UserService {
 
     public User get(UUID id) {
         //TODO Change the hard code message
-        return repo.findById(id).orElseThrow(() -> new NotFoundException("Usuario nao encontrado."));
+        return repo.findById(id).orElseThrow(() -> new NotFoundException(Messages.User.NOT_FOUND));
     }
 
     public List<User> searchByName(String name) {
@@ -54,7 +54,7 @@ public class UserService {
         // If change the email checks if it's unique
         if (!u.getEmail().equalsIgnoreCase(req.email()) && repo.existsByEmail(req.email())) {
             //TODO Change the hard code message
-            throw new ConflictException("E-mail ja cadastrado.");
+            throw new ConflictException(Messages.User.EMAIL_ALREADY_EXISTS);
         }
 
         u.setName(req.name());
@@ -71,7 +71,7 @@ public class UserService {
 
         if (!encoder.matches(req.password(), u.getPasswordHash())) {
             //TODO Change the hard code message
-            throw new BadRequestException("Senha atual invalida.");
+            throw new BadRequestException(Messages.User.INVALID_CURRENT_PASSWORD);
         }
         u.setPasswordHash(encoder.encode(req.newPassword()));
         repo.save(u);
