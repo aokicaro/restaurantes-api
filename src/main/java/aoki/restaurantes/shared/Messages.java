@@ -1,10 +1,15 @@
 package aoki.restaurantes.shared;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 public class Messages {
     private Messages(){}
-    public static final class User {
-        private User() {}
-        public static final String EMAIL_ALREADY_EXISTS = "E-mail ja cadastrado.";
-        public static final String NOT_FOUND = "Usuario nao encontrado.";
-        public static final String INVALID_CURRENT_PASSWORD = "Senha atual invalida.";
+    @Getter
+    @RequiredArgsConstructor
+    public enum User {
+        EMAIL_ALREADY_EXISTS("E-mail ja cadastrado."),
+        NOT_FOUND("Usuario nao encontrado."),
+        INVALID_CURRENT_PASSWORD("Senha atual invalida.");
+
+        private final String text;
 }}
