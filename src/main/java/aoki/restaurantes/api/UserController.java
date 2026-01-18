@@ -6,7 +6,6 @@ import aoki.restaurantes.dto.UserResponse;
 import aoki.restaurantes.dto.UserUpdateRequest;
 import aoki.restaurantes.service.UserService;
 import jakarta.validation.Valid;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +45,7 @@ public class UserController {
     // Endpoint with password
     @PatchMapping("/{id}/password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void changePassword(@PathVariable UUID id, @Valid @RequestBody ChangePasswordRequest req) throws BadRequestException {
+    public void changePassword(@PathVariable UUID id, @Valid @RequestBody ChangePasswordRequest req) {
         service.changePassword(id, req);
     }
 
