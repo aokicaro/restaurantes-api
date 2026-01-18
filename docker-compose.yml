@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: restaurantes
       POSTGRES_PASSWORD: restaurantes
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
 
@@ -20,8 +20,10 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/restaurantes
       SPRING_DATASOURCE_USERNAME: restaurantes
       SPRING_DATASOURCE_PASSWORD: restaurantes
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_OPEN_IN_VIEW: "false"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
     ports:
       - "8080:8080"
     depends_on:
