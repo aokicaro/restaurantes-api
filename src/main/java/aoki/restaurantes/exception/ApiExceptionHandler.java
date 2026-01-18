@@ -14,22 +14,22 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ProblemDetail handleNotFound(NotFoundException ex) {
-        return base(HttpStatus.NOT_FOUND, "Nao encontrado", ex.getMessage(), "not-found");
+        return base(HttpStatus.NOT_FOUND, "Not Found", ex.getMessage(), "not-found");
     }
 
     @ExceptionHandler(ConflictException.class)
     public ProblemDetail handleConflict(ConflictException ex) {
-        return base(HttpStatus.CONFLICT, "Conflito", ex.getMessage(), "conflict");
+        return base(HttpStatus.CONFLICT, "Conflict", ex.getMessage(), "conflict");
     }
 
     @ExceptionHandler(BadRequestException.class)
     public ProblemDetail handleBadRequest(BadRequestException ex) {
-        return base(HttpStatus.BAD_REQUEST, "Requisicao invalida", ex.getMessage(), "bad-request");
+        return base(HttpStatus.BAD_REQUEST, "Bad request", ex.getMessage(), "bad-request");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidation(MethodArgumentNotValidException ex) {
-        ProblemDetail pd = base(HttpStatus.BAD_REQUEST, "Validacao", "Campos invalidos.", "validation");
+        ProblemDetail pd = base(HttpStatus.BAD_REQUEST, "Validation", "Invalid fields.", "validation");
         var errors = ex.getBindingResult().getFieldErrors().stream()
                 .map(fe -> Map.of("field", fe.getField(), "message", fe.getDefaultMessage()))
                 .toList();
@@ -40,7 +40,7 @@ public class ApiExceptionHandler {
     private ProblemDetail base(HttpStatus status, String title, String detail, String typeSuffix) {
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(status, detail);
         pd.setTitle(title);
-        pd.setType(URI.create("https://api.suaapp.com/problems/" + typeSuffix));
+        pd.setType(URI.create("/problems/" + typeSuffix));
         pd.setProperty("timestamp", Instant.now().toString());
         return pd;
     }
