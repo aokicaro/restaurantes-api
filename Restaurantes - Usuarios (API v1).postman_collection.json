@@ -1,0 +1,552 @@
+{
+  "info": {
+    "_postman_id": "fd982d83-f8fc-4cd6-b290-2a71235e689b",
+    "name": "Restaurantes - Usuarios (API v1)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "44757204",
+    "_collection_link": "https://go.postman.co/collection/44757204-fd982d83-f8fc-4cd6-b290-2a71235e689b?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "01 - Users - Create (CLIENTE) [salva userId]",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "var json = pm.response.json();",
+              "pm.collectionVariables.set('userId', json.id);",
+              "pm.collectionVariables.set('login', json.login);",
+              "pm.collectionVariables.set('password', '123456');",
+              "pm.test('Tem id', function(){ pm.expect(json.id).to.be.ok; });"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Fernanda S Aoki\",\n  \"email\": \"ferSoares.aoki@example.com\",\n  \"login\": \"fernandaSAoki\",\n  \"password\": \"123456\",\n  \"role\": \"CLIENTE\",\n  \"address\": {\n    \"street\": \"Rua A\",\n    \"number\": \"10\",\n    \"city\": \"Rio de Janeiro\",\n    \"zipcode\": \"20000-000\",\n    \"complement\": \"Apto 101\"\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/users",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "02 - Users - Create (DONO_RESTAURANTE)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Icaro Aoki\",\n  \"email\": \"Icaro@example.com\",\n  \"login\": \"Icaro\",\n  \"password\": \"123456\",\n  \"role\": \"DONO_RESTAURANTE\",\n  \"address\": {\n    \"street\": \"Av Central\",\n    \"number\": \"500\",\n    \"city\": \"Rio de Janeiro\",\n    \"zipcode\": \"24000-000\",\n    \"complement\": \"\"\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/users",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "03 - Users - GetById",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "var json = pm.response.json();",
+              "pm.test('Id bate', function(){ pm.expect(json.id).to.eql(pm.collectionVariables.get('userId')); });"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/users/{{userId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "users",
+            "{{userId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "04 - Users - SearchByName (name=Icaro)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "var arr = pm.response.json();",
+              "pm.test('Retorna lista', function(){ pm.expect(Array.isArray(arr)).to.be.true; });"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/users?name=Fer",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "users"
+          ],
+          "query": [
+            {
+              "key": "name",
+              "value": "Fer"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "05 - Users - UpdateProfile (PUT) [nao altera senha]",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "var json = pm.response.json();",
+              "pm.test('Nome atualizado', function(){ pm.expect(json.nome).to.include('Atualizada'); });"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n \"name\": \"Fernanda S Aoki2\",\n        \"email\": \"ferSoares.aoki@example.com\",\n        \"login\": \"fernandaSAoki\",\n        \"role\": \"CLIENTE\",\n        \"address\": {\n            \"street\": \"Rua A\",\n            \"number\": \"10\",\n            \"city\": \"Rio de Janeiro\",\n            \"zipCode\": \"20000-000\",\n            \"complement\": \"Apto 101\"\n  }\n}\n"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/users/{{userId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "users",
+            "{{userId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "06 - Users - ChangePassword (PATCH) [sucesso]",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 204', function () { pm.response.to.have.status(204); });"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"password\": \"{{password}}\",\n  \"newPassword\": \"{{newPassword}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/users/{{userId}}/password",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "users",
+            "{{userId}}",
+            "password"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "07 - Auth - Validate (login/senha) [depois da troca]",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "var json = pm.response.json();",
+              "pm.test('valid=true', function(){ pm.expect(json.valid).to.eql(true); });"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"login\": \"{{login}}\",\n  \"password\": \"{{newPassword}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/auth/validate",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "auth",
+            "validate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "08 - Users - ChangePassword (PATCH) [erro senha atual errada]",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 400', function () { pm.response.to.have.status(400); });",
+              "var pd = pm.response.json();",
+              "pm.test('ProblemDetail basico', function(){ pm.expect(pd).to.have.property('status'); pm.expect(pd).to.have.property('title'); });"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"newPassword\": \"SENHA_ERRADA\",\n  \"password\": \"55555555\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/users/{{userId}}/password",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "users",
+            "{{userId}}",
+            "password"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "09 - Users - Create [erro email duplicado]",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 409', function () { pm.response.to.have.status(409); });",
+              "var pd = pm.response.json();",
+              "pm.test('ProblemDetail', function(){ pm.expect(pd.status).to.eql(409); });"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Teste Duplicado\",\n  \"email\": \"fer.aoki@example.com\",\n  \"login\": \"dup\",\n  \"password\": \"123456\",\n  \"role\": \"CLIENTE\",\n  \"address\": {\n    \"rua\": \"Rua X\",\n    \"numero\": \"1\",\n    \"cidade\": \"RJ\",\n    \"cep\": \"20000-000\",\n    \"complemento\": \"\"\n  }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/users",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "10 - Users - Create [erro validacao campos obrigatorios]",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 400', function () { pm.response.to.have.status(400); });",
+              "var pd = pm.response.json();",
+              "pm.test('Tem errors', function(){ pm.expect(pd).to.have.property('errors'); });"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"\",\n  \"email\": \"\",\n  \"login\": \"\",\n  \"password\": \"\",\n  \"role\": null,\n  \"address\": null\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/users",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "11 - Auth - Validate [erro senha]",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "var json = pm.response.json();",
+              "pm.test('valid=false', function(){ pm.expect(json.valid).to.eql(false); });"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"login\": \"{{login}}\",\n  \"password\": \"senha_errada\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/auth/validate",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "auth",
+            "validate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "12 - Auth - Validate",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "var json = pm.response.json();",
+              "pm.test('valid=false', function(){ pm.expect(json.valid).to.eql(false); });"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"login\": \"{{login}}\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/auth/validate",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "auth",
+            "validate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "13 - Users Delete",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/users/{{userId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "users",
+            "{{userId}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "login",
+      "value": "ana"
+    },
+    {
+      "key": "password",
+      "value": "123456"
+    },
+    {
+      "key": "newPassword",
+      "value": "654321"
+    }
+  ]
+}
