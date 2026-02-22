@@ -1,8 +1,7 @@
 package aoki.restaurantes.dto;
 
-import aoki.restaurantes.domain.Address;
 import aoki.restaurantes.domain.User;
-import aoki.restaurantes.domain.UserRole;
+import aoki.restaurantes.domain.UserType;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -12,7 +11,7 @@ public record UserResponse(
         String name,
         String email,
         String login,
-        UserRole role,
+        UserType userType,
         AddressResponse addressResponse,
         Instant createdAt,
         Instant lastModified
@@ -26,29 +25,29 @@ public record UserResponse(
                 user.getName(),
                 user.getEmail(),
                 user.getLogin(),
-                user.getRole(),
+                user.getUserType(),
                 AddressResponse.from(user.getAddress()),
                 user.getCreatedAt(),
                 user.getLastModified()
         );
     }
 
-    public record AddressResponse(
-            String street,
-            String number,
-            String city,
-            String zipCode,
-            String complement
-    ) {
-        public static AddressResponse from(Address address) {
-            if (address == null) return null;
-            return new AddressResponse(
-                    address.getStreet(),
-                    address.getNumber(),
-                    address.getCity(),
-                    address.getZipcode(),
-                    address.getComplement()
-            );
-        }
-    }
+//    public record AddressResponse(
+//            String street,
+//            String number,
+//            String city,
+//            String zipCode,
+//            String complement
+//    ) {
+//        public static AddressResponse from(Address address) {
+//            if (address == null) return null;
+//            return new AddressResponse(
+//                    address.getStreet(),
+//                    address.getNumber(),
+//                    address.getCity(),
+//                    address.getZipcode(),
+//                    address.getComplement()
+//            );
+//        }
+//    }
 }

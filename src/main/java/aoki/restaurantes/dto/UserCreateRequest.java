@@ -2,6 +2,7 @@ package aoki.restaurantes.dto;
 
 import aoki.restaurantes.domain.Address;
 import aoki.restaurantes.domain.UserRole;
+import aoki.restaurantes.domain.UserType;
 import jakarta.validation.constraints.*;
 
 public record UserCreateRequest(
@@ -9,6 +10,6 @@ public record UserCreateRequest(
         @Email @NotBlank String email,
         @NotBlank String login,
         @NotBlank String password,
-        @NotNull UserRole role,
+        @NotNull UserType userType,
         @NotNull Address address
 ) {}

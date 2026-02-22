@@ -19,43 +19,42 @@ import aoki.restaurantes.shared.Messages;
 @Service
 public class UserService {
 
-    private final UserRepository repo;
+    private final UserRepository repository;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public UserService(UserRepository repo) { this.repo = repo; }
+    public UserService(UserRepository repository) { this.repository = repository; }
 
     @Transactional
     public User create(UserCreateRequest req) {
 
-        if (repo.existsByEmail(req.email()))
+        if (repository.existsByEmail(req.email()))
             throw new ConflictException(Messages.User.EMAIL_ALREADY_EXISTS.getText());
 
         User u = new User();
         u.setName(req.name());
         u.setEmail(req.email());
         u.setLogin(req.login());
-        u.setRole(req.role());
+        u.setUserType(req.userType());
         u.setAddress(req.address());
         u.setPasswordHash(encoder.encode(req.password()));
-        return repo.save(u);
+        return repository.save(u);
     }
 
-    public User get(UUID id) {
-
-        return repo.findById(id)
+    public User findById(UUID id) {
+        return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(Messages.User.NOT_FOUND.getText()));
     }
 
     public List<User> searchByName(String name) {
-        return repo.findByNameContainingIgnoreCase(name);
+        return repository.findByNameContainingIgnoreCase(name);
     }
 
     @Transactional
     public User updateProfile(UUID id, UserUpdateRequest req) {
-        User u = get(id);
+        User u = findById(id);
 
         // If change the email checks if it's unique
-        if (!u.getEmail().equalsIgnoreCase(req.email()) && repo.existsByEmail(req.email())) {
+        if (!u.getEmail().equalsIgnoreCase(req.email()) && repository.existsByEmail(req.email())) {
 
             throw new ConflictException(Messages.User.EMAIL_ALREADY_EXISTS.getText());
         }
@@ -63,30 +62,30 @@ public class UserService {
         u.setName(req.name());
         u.setEmail(req.email());
         u.setLogin(req.login());
-        u.setRole(req.role());
+        u.setUserType(req.userType());
         u.setAddress(req.address());
-        return repo.save(u);
+        return repository.save(u);
     }
 
     @Transactional
     public void changePassword(UUID id, ChangePasswordRequest req) {
-        User u = get(id);
+        User u = findById(id);
 
         if (!encoder.matches(req.password(), u.getPasswordHash())) {
             throw new BadRequestException(Messages.User.INVALID_CURRENT_PASSWORD.getText());
         }
         u.setPasswordHash(encoder.encode(req.newPassword()));
-        repo.save(u);
+        repository.save(u);
     }
 
     @Transactional
     public void delete(UUID id) {
-        User u = get(id);
-        repo.delete(u);
+        User u = findById(id);
+        repository.delete(u);
     }
 
     public boolean validateLogin(LoginRequest req) {
-        return repo.findByLogin(req.login())
+        return repository.findByLogin(req.login())
                 .map(u -> encoder.matches(req.password(), u.getPasswordHash()))
                 .orElse(false);
     }
