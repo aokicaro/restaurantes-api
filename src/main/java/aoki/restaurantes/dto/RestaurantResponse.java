@@ -1,6 +1,5 @@
 package aoki.restaurantes.dto;
 
-import aoki.restaurantes.dto.AddressResponse;
 import aoki.restaurantes.domain.Restaurant;
 
 import java.util.UUID;
@@ -8,7 +7,7 @@ import java.util.UUID;
 public record RestaurantResponse(
         UUID id,
         String name,
-        AddressResponse address,
+        AddressDto address,
         String cuisineType,
         String openingHours,
         UUID ownerUserId
@@ -17,7 +16,7 @@ public record RestaurantResponse(
         return new RestaurantResponse(
                 restaurant.getId(),
                 restaurant.getName(),
-                AddressResponse.from(restaurant.getAddress()),
+                AddressDto.from(restaurant.getAddress()),
                 restaurant.getCuisineType(),
                 restaurant.getOpeningHour(),
                 restaurant.getOwner().getId()
