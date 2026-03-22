@@ -32,6 +32,7 @@ public class MenuItemService {
         menuItem.setName(createRequest.name());
         menuItem.setDescription(createRequest.description());
         menuItem.setDineInOnly(createRequest.dineInOnly());
+        menuItem.setPrice(createRequest.price());
         menuItem.setPhotoPath(createRequest.photoPath());
         return menuItemRepository.save(menuItem);
     }

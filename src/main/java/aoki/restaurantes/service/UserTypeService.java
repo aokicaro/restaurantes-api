@@ -12,42 +12,42 @@ import java.util.UUID;
 
 @Service
 public class UserTypeService {
-    private final UserTypeRepository repository;
+    private final UserTypeRepository userTypeRepository;
 
-    public UserTypeService(UserTypeRepository repository){
-        this.repository = repository;
+    public UserTypeService(UserTypeRepository userTypeRepository){
+        this.userTypeRepository = userTypeRepository;
     }
 
     @Transactional
     public UserType create(String name) {
-        if(repository.existsByNameIgnoreCase(name)){
+        if(userTypeRepository.existsByNameIgnoreCase(name)){
             throw new ConflictException("Tipo de usuário já existe.");
         }
         var userType = new UserType();
         userType.setName(name.trim());
-        return repository.save(userType);
+        return userTypeRepository.save(userType);
     }
 
     public UserType findById(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("Tipo de usuário não encontrado"));
+        return userTypeRepository.findById(id).orElseThrow(() -> new NotFoundException("Tipo de usuário não encontrado"));
     }
     public List<UserType> findAll() {
-        return repository.findAll();
+        return userTypeRepository.findAll();
     }
 
     @Transactional
     public UserType update(UUID id, String name) {
         var userType = findById(id);
-        if(!userType.getName().equalsIgnoreCase(name) && repository.existsByNameIgnoreCase(name)) {
+        if(!userType.getName().equalsIgnoreCase(name) && userTypeRepository.existsByNameIgnoreCase(name)) {
             throw  new ConflictException("Tipo de usuário já existe.");
         }
         userType.setName(name.trim());
-        return repository.save(userType);
+        return userTypeRepository.save(userType);
     }
 
     @Transactional
     public void delete(UUID id){
-        repository.delete(findById(id));
+        userTypeRepository.delete(findById(id));
     }
 
 

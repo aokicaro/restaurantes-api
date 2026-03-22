@@ -2,6 +2,7 @@ package aoki.restaurantes.api;
 
 import aoki.restaurantes.dto.UserTypeCreateRequest;
 import aoki.restaurantes.dto.UserTypeResponse;
+import aoki.restaurantes.dto.UserTypeUpdateRequest;
 import aoki.restaurantes.service.UserTypeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/user-types")
+@RequestMapping("/api/v1/user-types")
 public class UserTypeController {
     private final UserTypeService userTypeService;
 
@@ -36,8 +37,8 @@ public class UserTypeController {
     }
 
     @PutMapping("/{id}")
-    public UserTypeResponse update(@PathVariable UUID id, @Valid @RequestBody UserTypeCreateRequest createRequest) {
-        return UserTypeResponse.from(userTypeService.update(id, createRequest.name()));
+    public UserTypeResponse update(@PathVariable UUID id, @Valid @RequestBody UserTypeUpdateRequest updateRequest) {
+        return UserTypeResponse.from(userTypeService.update(id, updateRequest.name()));
     }
 
     @DeleteMapping("/{id}")
