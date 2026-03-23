@@ -1,0 +1,7 @@
+package aoki.restaurantes.dto;
+
+import jakarta.validation.constraints.NotBlank;
+
+public record UserTypeUpdateRequest(
+        @NotBlank String name
+) {}

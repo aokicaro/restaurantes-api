@@ -32,9 +32,9 @@ public class User {
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private UserRole role;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_type_id", nullable = false, foreignKey = @ForeignKey(name = "fk_users_user_type"))
+    private UserType userType;
 
     @Embedded
     private Address address;
@@ -57,5 +57,4 @@ public class User {
         lastModified = Instant.now();
     }
 
-    // getters/setters
 }
