@@ -33,10 +33,6 @@ A aplicação segue uma arquitetura em camadas para separar responsabilidades e 
 Estrutura sugerida do projeto:
 
 ```
-
-
-Estrutura do projeto:
-
 aoki.restaurantes
   api/
     UserController.java
