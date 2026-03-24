@@ -1,6 +1,6 @@
 # Restaurantes – Tech Challenge Fase 2
 
-###Backend da Fase 2 do Tech Challenge, expandindo o sistema com **Tipos de Usuário**, **Restaurantes** e **Itens de Cardápio**, além da manutenção do módulo de **Usuários** e da **validação de login**.
+### Backend da Fase 2 do Tech Challenge, expandindo o sistema com **Tipos de Usuário**, **Restaurantes** e **Itens de Cardápio**, além da manutenção do módulo de **Usuários** e da **validação de login**.
 ---
 
 ## Stack
